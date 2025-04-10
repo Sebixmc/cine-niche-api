@@ -3,6 +3,7 @@ import json
 from fastapi.middleware.cors import CORSMiddleware
 
 
+
 app = FastAPI()
 
 # ✅ CORS Setup
@@ -22,6 +23,10 @@ with open("collab_recommendations.json") as f:
 with open("content_recommendations.json") as f:
     item_recs = json.load(f)
 
+with open("hybrid_recommendations.json") as f:
+    hybrid_recs = json.load(f)
+
+
 @app.get("/")
 def root():
     return {"message": "CineNiche Recommendation API is up 🚀"}
@@ -39,3 +44,10 @@ def recommend_item(show_id: str):
         return {"show_id": show_id, "recommendations": item_recs[show_id]}
     else:
         raise HTTPException(status_code=404, detail="Show not found")
+
+@app.get("/recommend/hybrid/{show_id}")
+def recommend_hybrid(show_id: str):
+    if show_id in hybrid_recs:
+        return {"show_id": show_id, "recommendations": hybrid_recs[show_id]}
+    else:
+        raise HTTPException(status_code=404, detail="Show not found in hybrid recommendations")
