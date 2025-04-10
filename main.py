@@ -1,18 +1,19 @@
 from fastapi import FastAPI, HTTPException
 import json
+from fastapi.middleware.cors import CORSMiddleware
+
 
 app = FastAPI()
 
+# ✅ CORS Setup
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-    "http://localhost:3000",
-    "https://proud-meadow-034f6310f.6.azurestaticapps.net"
-    ]
+    allow_origins=["http://localhost:3000", "https://cine-niche.vercel.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 # Load recommendation data
 with open("collab_recommendations.json") as f:
