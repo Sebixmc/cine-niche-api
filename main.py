@@ -26,6 +26,10 @@ with open("content_recommendations.json") as f:
 with open("hybrid_recommendations.json") as f:
     hybrid_recs = json.load(f)
 
+with open("enriched_user_recommendations.json") as f:
+    enriched_user_recs = json.load(f)
+
+
 
 @app.get("/")
 def root():
@@ -51,3 +55,11 @@ def recommend_hybrid(show_id: str):
         return {"show_id": show_id, "recommendations": hybrid_recs[show_id]}
     else:
         raise HTTPException(status_code=404, detail="Show not found in hybrid recommendations")
+    
+@app.get("/recommend/enriched/{user_id}")
+def recommend_enriched(user_id: str):
+    if user_id in enriched_user_recs:
+        return {"user_id": user_id, "recommendations": enriched_user_recs[user_id]}
+    else:
+        raise HTTPException(status_code=404, detail="User not found in enriched recommendations")
+
